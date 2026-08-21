@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "To Do" },
-      { name: "description", content: "A simple to-do app." },
-      { property: "og:title", content: "To Do" },
-      { property: "og:description", content: "A simple to-do app." },
+      { title: "Tasks" },
+      { name: "description", content: "A simple dark to-do app." },
+      { property: "og:title", content: "Tasks" },
+      { property: "og:description", content: "A simple dark to-do app." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -52,12 +52,12 @@ function Index() {
     }
   }, [tasks]);
 
-  const activeTasks = useMemo(
-    () => tasks.filter((t) => !t.completed).sort((a, b) => b.createdAt - a.createdAt),
-    [tasks]
-  );
-  const completedTasks = useMemo(
-    () => tasks.filter((t) => t.completed).sort((a, b) => b.createdAt - a.createdAt),
+  const sortedTasks = useMemo(
+    () =>
+      [...tasks].sort((a, b) => {
+        if (a.completed === b.completed) return b.createdAt - a.createdAt;
+        return a.completed ? 1 : -1;
+      }),
     [tasks]
   );
 
@@ -85,10 +85,6 @@ function Index() {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const clearCompleted = useCallback(() => {
-    setTasks((prev) => prev.filter((t) => !t.completed));
-  }, []);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -97,65 +93,39 @@ function Index() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8">
-      <div className="mx-auto w-full max-w-xl">
-        <h1 className="text-3xl font-bold text-foreground">To Do</h1>
+    <main className="min-h-screen bg-background px-4 py-8 sm:py-12">
+      <div className="mx-auto w-full max-w-md">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Tasks</h1>
 
-        <div className="mt-6 flex items-center gap-2 rounded-lg border border-input bg-background p-2">
+        <div className="mt-6 flex items-center gap-2">
           <Input
             ref={inputRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Add a task..."
-            className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0"
+            placeholder="What needs to be done?"
+            className="h-12 flex-1 rounded-xl border-border bg-card px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
             aria-label="New task"
           />
           <Button
             onClick={addTask}
             disabled={!inputValue.trim()}
-            size="sm"
-            className="rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            size="icon"
+            className="h-12 w-12 shrink-0 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            aria-label="Add task"
           >
-            <Plus className="h-4 w-4" />
-            <span className="ml-1 hidden sm:inline">Add</span>
+            <Plus className="h-5 w-5" />
           </Button>
         </div>
 
-        <section className="mt-8">
-          <h2 className="text-sm font-semibold text-muted-foreground">To Do ({activeTasks.length})</h2>
-          <ul className="mt-3 space-y-2">
-            {activeTasks.map((task) => (
-              <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask} />
-            ))}
-            {activeTasks.length === 0 && (
-              <li className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                No tasks yet.
-              </li>
-            )}
-          </ul>
-        </section>
-
-        {completedTasks.length > 0 && (
-          <section className="mt-8">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-muted-foreground">Completed ({completedTasks.length})</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearCompleted}
-                className="h-auto px-2 py-1 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                Clear
-              </Button>
-            </div>
-            <ul className="mt-3 space-y-2">
-              {completedTasks.map((task) => (
-                <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask} />
-              ))}
-            </ul>
-          </section>
-        )}
+        <ul className="mt-6 space-y-2">
+          {sortedTasks.map((task) => (
+            <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask} />
+          ))}
+          {sortedTasks.length === 0 && (
+            <li className="py-10 text-center text-sm text-muted-foreground">No tasks yet.</li>
+          )}
+        </ul>
       </div>
     </main>
   );
@@ -171,16 +141,17 @@ function TaskItem({
   onDelete: (id: string) => void;
 }) {
   return (
-    <li className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
+    <li className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 sm:gap-4 sm:p-4">
       <Checkbox
         id={`task-${task.id}`}
         checked={task.completed}
         onCheckedChange={() => onToggle(task.id)}
+        className="h-5 w-5 shrink-0 border-muted-foreground data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
         aria-label={task.completed ? "Mark as incomplete" : "Mark as complete"}
       />
       <label
         htmlFor={`task-${task.id}`}
-        className={`min-w-0 flex-1 cursor-pointer text-sm font-medium ${
+        className={`min-w-0 flex-1 cursor-pointer text-sm leading-relaxed sm:text-base ${
           task.completed ? "text-muted-foreground line-through" : "text-foreground"
         }`}
       >
@@ -190,10 +161,10 @@ function TaskItem({
         variant="ghost"
         size="icon"
         onClick={() => onDelete(task.id)}
-        className="h-8 w-8 shrink-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+        className="h-9 w-9 shrink-0 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
         aria-label="Delete task"
       >
-        <Trash2 className="h-4 w-4" />
+        <X className="h-4 w-4" />
       </Button>
     </li>
   );
