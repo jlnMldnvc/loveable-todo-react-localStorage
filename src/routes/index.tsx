@@ -1,10 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Plus, X } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 
 const TITLE = "Tasks";
 const DESCRIPTION = "A simple dark to-do app.";
@@ -79,39 +74,29 @@ function Index() {
   );
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8 sm:py-12">
-      <div className="mx-auto w-full max-w-md">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          {TITLE}
-        </h1>
+    <main className="page">
+      <div className="shell">
+        <h1 className="title">{TITLE}</h1>
 
-        <form onSubmit={onSubmit} className="mt-6 flex items-center gap-2">
-          <Input
+        <form onSubmit={onSubmit} className="form">
+          <input
             autoFocus
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="What needs to be done?"
-            className="h-12 flex-1 rounded-xl bg-card px-4 text-base focus-visible:ring-primary"
+            className="input"
             aria-label="New task"
           />
-          <Button
-            type="submit"
-            disabled={!text}
-            size="icon"
-            className="h-12 w-12 shrink-0 rounded-xl disabled:opacity-50"
-            aria-label="Add task"
-          >
-            <Plus className="h-5 w-5" />
-          </Button>
+          <button type="submit" disabled={!text} className="add" aria-label="Add task">
+            <PlusIcon />
+          </button>
         </form>
 
-        <ul className="mt-6 space-y-2">
+        <ul className="list">
           {sorted.map((task) => (
             <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
           ))}
-          {!sorted.length && (
-            <li className="py-10 text-center text-sm text-muted-foreground">No tasks yet.</li>
-          )}
+          {!sorted.length && <li className="empty">No tasks yet.</li>}
         </ul>
       </div>
     </main>
@@ -128,31 +113,50 @@ const TaskItem = memo(function TaskItem({
   onDelete: (id: string) => void;
 }) {
   return (
-    <li className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 sm:gap-4 sm:p-4">
-      <Checkbox
+    <li className="item">
+      <input
+        type="checkbox"
         id={task.id}
         checked={task.completed}
-        onCheckedChange={() => onToggle(task.id)}
-        className="h-5 w-5 shrink-0"
+        onChange={() => onToggle(task.id)}
+        className="check"
         aria-label={task.completed ? "Mark as incomplete" : "Mark as complete"}
       />
-      <label
-        htmlFor={task.id}
-        className={`min-w-0 flex-1 cursor-pointer text-sm leading-relaxed sm:text-base ${
-          task.completed ? "text-muted-foreground line-through" : "text-foreground"
-        }`}
-      >
+      <label htmlFor={task.id} className={task.completed ? "label done" : "label"}>
         {task.text}
       </label>
-      <Button
-        variant="ghost"
-        size="icon"
+      <button
+        type="button"
         onClick={() => onDelete(task.id)}
-        className="h-9 w-9 shrink-0 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+        className="delete"
         aria-label="Delete task"
       >
-        <X className="h-4 w-4" />
-      </Button>
+        <XIcon />
+      </button>
     </li>
   );
 });
+
+const iconProps = {
+  width: 18,
+  height: 18,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": true,
+} as const;
+
+const PlusIcon = () => (
+  <svg {...iconProps} width={20} height={20}>
+    <path d="M5 12h14M12 5v14" />
+  </svg>
+);
+
+const XIcon = () => (
+  <svg {...iconProps}>
+    <path d="M18 6 6 18M6 6l12 12" />
+  </svg>
+);
