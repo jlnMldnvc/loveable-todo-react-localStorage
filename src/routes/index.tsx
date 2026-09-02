@@ -41,7 +41,7 @@ const byStatusThenNewest = (a: Task, b: Task) =>
 function Index() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [ready, setReady] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ message: string; fromLoad: boolean } | null>(null);
   const [value, setValue] = useState("");
   const text = value.trim();
 
@@ -49,7 +49,7 @@ function Index() {
   useEffect(() => {
     const { tasks: loaded, error: loadError } = loadTasks();
     setTasks(loaded);
-    if (loadError) setError(loadError);
+    if (loadError) setError({ message: loadError, fromLoad: true });
     setReady(true);
   }, []);
 
@@ -57,9 +57,10 @@ function Index() {
     if (!ready) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-      setError("");
+      // A load error should stay visible until the user dismisses it.
+      setError((prev) => (prev?.fromLoad ? prev : null));
     } catch {
-      setError("Couldn't save your tasks — storage is unavailable.");
+      setError({ message: "Couldn't save your tasks — storage is unavailable.", fromLoad: false });
     }
   }, [tasks, ready]);
 
@@ -110,10 +111,10 @@ function Index() {
 
         {error && (
           <p className="error" role="alert">
-            {error}
+            {error.message}
             <button
               type="button"
-              onClick={() => setError("")}
+              onClick={() => setError(null)}
               className="error-close"
               aria-label="Dismiss error"
             >
