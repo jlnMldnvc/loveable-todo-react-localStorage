@@ -32,7 +32,7 @@ A ultra-fast, mobile-first, minimalist task management web application built wit
 
 **Clone the repository:**
 ```bash
-   git clone [https://github.com/jlnMldnvc/modern-do-magic.git](https://github.com/jlnMldnvc/modern-do-magic.git)
+git clone https://github.com/jlnMldnvc/modern-do-magic.git
 ```
    1. Navigate to the project folder:
 
@@ -50,7 +50,7 @@ npm install
 npm run dev
 ```
 
-📝 Key Engineering Learnings
+## 📝 Key Engineering Learnings
 This app was iteratively refined through a focus on performance:
 
 - Replaced heavyweight UI framework components (shadcn/Radix/Tailwind) with lightweight, semantic CSS.
