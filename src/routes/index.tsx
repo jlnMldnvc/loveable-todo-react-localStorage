@@ -22,13 +22,16 @@ type Task = { id: string; text: string; completed: boolean; createdAt: number };
 
 const STORAGE_KEY = "tasks";
 
-const loadTasks = (): Task[] => {
-  if (typeof window === "undefined") return [];
+const loadTasks = (): { tasks: Task[]; error?: string } => {
+  if (typeof window === "undefined") return { tasks: [] };
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-    return Array.isArray(parsed) ? parsed : [];
+    return { tasks: Array.isArray(parsed) ? parsed : [] };
   } catch {
-    return [];
+    return {
+      tasks: [],
+      error: "Couldn't load your tasks — storage data is corrupted or unavailable.",
+    };
   }
 };
 
@@ -38,13 +41,15 @@ const byStatusThenNewest = (a: Task, b: Task) =>
 function Index() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [ready, setReady] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ message: string; fromLoad: boolean } | null>(null);
   const [value, setValue] = useState("");
   const text = value.trim();
 
   // Read storage after hydration so server and client HTML match.
   useEffect(() => {
-    setTasks(loadTasks());
+    const { tasks: loaded, error: loadError } = loadTasks();
+    setTasks(loaded);
+    if (loadError) setError({ message: loadError, fromLoad: true });
     setReady(true);
   }, []);
 
@@ -52,9 +57,10 @@ function Index() {
     if (!ready) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-      setError("");
+      // A load error should stay visible until the user dismisses it.
+      setError((prev) => (prev?.fromLoad ? prev : null));
     } catch {
-      setError("Couldn't save your tasks — storage is unavailable.");
+      setError({ message: "Couldn't save your tasks — storage is unavailable.", fromLoad: false });
     }
   }, [tasks, ready]);
 
@@ -105,7 +111,15 @@ function Index() {
 
         {error && (
           <p className="error" role="alert">
-            {error}
+            {error.message}
+            <button
+              type="button"
+              onClick={() => setError(null)}
+              className="error-close"
+              aria-label="Dismiss error"
+            >
+              <XIcon />
+            </button>
           </p>
         )}
 
