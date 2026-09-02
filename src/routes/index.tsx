@@ -36,19 +36,30 @@ const byStatusThenNewest = (a: Task, b: Task) =>
   Number(a.completed) - Number(b.completed) || b.createdAt - a.createdAt;
 
 function Index() {
-  const [tasks, setTasks] = useState<Task[]>(loadTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState("");
   const [value, setValue] = useState("");
   const text = value.trim();
 
+  // Read storage after hydration so server and client HTML match.
   useEffect(() => {
+    setTasks(loadTasks());
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      setError("");
     } catch {
-      /* storage unavailable */
+      setError("Couldn't save your tasks — storage is unavailable.");
     }
-  }, [tasks]);
+  }, [tasks, ready]);
 
   const sorted = useMemo(() => [...tasks].sort(byStatusThenNewest), [tasks]);
+
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,12 +103,21 @@ function Index() {
           </button>
         </form>
 
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
+
         <ul className="list">
-          {sorted.map((task) => (
-            <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
-          ))}
-          {!sorted.length && <li className="empty">No tasks yet.</li>}
+          {!ready && <li className="empty">Loading tasks…</li>}
+          {ready &&
+            sorted.map((task) => (
+              <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
+            ))}
+          {ready && !sorted.length && <li className="empty">No tasks yet.</li>}
         </ul>
+
       </div>
     </main>
   );

@@ -122,6 +122,17 @@ button {
   color: var(--muted-foreground);
 }
 
+.error {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--destructive);
+  background-color: color-mix(in srgb, var(--destructive) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--destructive) 35%, transparent);
+  border-radius: var(--radius);
+}
+
+
 .item {
   display: flex;
   align-items: center;
