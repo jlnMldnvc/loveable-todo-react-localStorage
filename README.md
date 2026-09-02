@@ -1,35 +1,36 @@
 # Modern Todo Magic 🧙‍♂️
 
-A modern, responsive To-Do application built with React and Supabase. The app allows users to manage daily tasks seamlessly with real-time database synchronization and user authentication.
+A lightweight, mobile-first To-Do application built with React, TypeScript, and TanStack Start. The app provides instant task management with local persistence using browser LocalStorage and zero external database overhead.
 
 ## 🌟 Features
 
-- **Task Management:** Create, mark as completed, and delete tasks.
-- **User Authentication:** Sign up and log in securely via Supabase.
-- **Real-time Sync:** Data persists across sessions in a Postgres database.
-- **Responsive Design:** Clean and modern UI tailored for both desktop and mobile devices.
+- **Task Management:** Create, toggle completion, and delete tasks seamlessly.
+- **Local Persistence:** Automatic synchronization with browser `localStorage`.
+- **Automatic Sorting:** Active tasks stay at the top; completed tasks move to the bottom.
+- **Responsive & Dark UI:** Clean dark theme built with modern native CSS.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, TypeScript, Tailwind CSS, shadcn/ui
-- **Build Tool:** Vite
-- **Backend & Database:** Supabase (Authentication & PostgreSQL)
+- **Framework:** React 19, TanStack Start
+- **Routing & State:** TanStack Router, TanStack Query
+- **Styling:** Plain CSS (CSS Variables, Flexbox, Media Queries)
+- **Language & Tooling:** TypeScript, Vite
 
 ## 📁 Project Structure
 
 ```text
 src/
-├── components/     # UI components (Task items, forms, headers)
-├── integrations/   # Supabase client setup & configuration
-├── pages/          # Main application views
-├── hooks/          # Custom React hooks
-└── App.tsx
+├── routes/
+│   ├── __root.tsx    # App shell, fonts, and base HTML configuration
+│   └── index.tsx     # Main To-Do application page and logic
+├── styles.css        # Native CSS styles and CSS Variables
+└── router.tsx        # TanStack Router configuration
 ```
 
 ## 🚀 Getting Started
 
 Prerequisites
-Make sure you have Node.js installed on your machine.
+Make sure you have Node.js [https://nodejs.org/] installed on your machine.
 
 Installation
 
@@ -64,3 +65,5 @@ npm run dev
 - Add task categories and priority levels
 - Implement dark mode toggle
 - Add due dates and push notifications
+- Implement Supabase backend sync and user authentication
+- Add task search and filtering
