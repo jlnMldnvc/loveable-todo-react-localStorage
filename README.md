@@ -1,58 +1,66 @@
-# ⚡ Minimalist Dark Mode Task Manager (`modern-do-magic`)
+# Modern Todo Magic 🧙‍♂️
 
-[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![CSS3](https://img.shields.io/badge/CSS3-Plain_CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Lovable.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://modern-do-magic.lovable.app/)
+A modern, responsive To-Do application built with React and Supabase. The app allows users to manage daily tasks seamlessly with real-time database synchronization and user authentication.
 
-A ultra-fast, mobile-first, minimalist task management web application built with modern React. Designed with a clean Slate & Sky dark mode palette, zero heavy external UI libraries, and optimized for maximum render efficiency and minimal bundle size.
+## 🌟 Features
 
-🌐 **Live Demo:** [https://modern-do-magic.lovable.app/](https://modern-do-magic.lovable.app/)
+- **Task Management:** Create, mark as completed, and delete tasks.
+- **User Authentication:** Sign up and log in securely via Supabase.
+- **Real-time Sync:** Data persists across sessions in a Postgres database.
+- **Responsive Design:** Clean and modern UI tailored for both desktop and mobile devices.
 
----
+## 🛠️ Tech Stack
 
-## ✨ Features & Architecture Highlights
+- **Frontend:** React, TypeScript, Tailwind CSS, shadcn/ui
+- **Build Tool:** Vite
+- **Backend & Database:** Supabase (Authentication & PostgreSQL)
 
-- 🎨 **Minimalist & Mobile-First UI:** Responsive single-column layout using custom plain CSS (no Tailwind, zero UI library clutter).
-- ⚡ **Highly Performance-Optimized:** Code-audited to remove 40+ unused packages; utilizes React memoization (`React.memo`, lean state management) to prevent unnecessary re-renders.
-- 💾 **Persistent Data:** Automatic task persistence using browser `localStorage`.
-- ♿ **Native & Accessible:** Built with semantic HTML elements and native form submission logic.
+## 📁 Project Structure
 
----
-
-## 🛠 Tech Stack
-
-- **Frontend:** React, JavaScript (ES6+), HTML5, Plain CSS3
-- **Tooling & Environment:** Node.js, npm, Vite
-- **Deployment:** Lovable Cloud Platform
-
----
-
-## ⚙️ How to Run Locally
-
-**Clone the repository:**
-```bash
-git clone https://github.com/jlnMldnvc/modern-do-magic.git
+```text
+src/
+├── components/     # UI components (Task items, forms, headers)
+├── integrations/   # Supabase client setup & configuration
+├── pages/          # Main application views
+├── hooks/          # Custom React hooks
+└── App.tsx
 ```
-   1. Navigate to the project folder:
 
-```bash
-cd modern-do-magic
+## 🚀 Getting Started
+
+Prerequisites
+Make sure you have Node.js installed on your machine.
+
+Installation
+
+1. Clone the repository:
+
+```Bash
+git clone https://github.com/jlnMldnvc/loveable-todo-react-supbase.git
+cd loveable-todo-react-supbase
 ```
 2. Install dependencies:
 
 ```bash
 npm install
 ```
-3. Start the local development server:
+3. Set up Environment Variables:
+Create a .env file in the root directory and add your Supabase credentials:
 
-```bash
+```
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+4. Run the application:
+
+```Bash
 npm run dev
 ```
+## 📸 Screenshot
+<img width="720" height="457" alt="modernDoMagic" src="https://github.com/user-attachments/assets/2dd5a4a7-7e13-4e09-ad95-cf108ca73c2e" />
 
-## 📝 Key Engineering Learnings
-This app was iteratively refined through a focus on performance:
+## 🔮 Future Improvements
 
-- Replaced heavyweight UI framework components (shadcn/Radix/Tailwind) with lightweight, semantic CSS.
-- Drastically reduced JavaScript bundle size by auditing dependencies.
-- Applied React memoization strategies for seamless task list rendering.
+- Add task categories and priority levels
+- Implement dark mode toggle
+- Add due dates and push notifications
