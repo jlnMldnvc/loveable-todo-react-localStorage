@@ -36,19 +36,30 @@ const byStatusThenNewest = (a: Task, b: Task) =>
   Number(a.completed) - Number(b.completed) || b.createdAt - a.createdAt;
 
 function Index() {
-  const [tasks, setTasks] = useState<Task[]>(loadTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState("");
   const [value, setValue] = useState("");
   const text = value.trim();
 
+  // Read storage after hydration so server and client HTML match.
   useEffect(() => {
+    setTasks(loadTasks());
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      setError("");
     } catch {
-      /* storage unavailable */
+      setError("Couldn't save your tasks — storage is unavailable.");
     }
-  }, [tasks]);
+  }, [tasks, ready]);
 
   const sorted = useMemo(() => [...tasks].sort(byStatusThenNewest), [tasks]);
+
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
