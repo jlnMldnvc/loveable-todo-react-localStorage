@@ -63,7 +63,8 @@ The app runs at `http://localhost:8080`.
 
 ## 📸 Screenshot
 
-<img width="720" height="457" alt="modernDoMagic" src="https://github.com/user-attachments/assets/2dd5a4a7-7e13-4e09-ad95-cf108ca73c2e" />
+<img width="420" height="800" alt="s" src="https://github.com/user-attachments/assets/0f240d44-9406-4deb-afbe-047ec094fa6c" />
+
 
 ## 🔮 Future Improvements
 
