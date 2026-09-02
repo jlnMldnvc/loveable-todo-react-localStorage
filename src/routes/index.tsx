@@ -103,12 +103,21 @@ function Index() {
           </button>
         </form>
 
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
+
         <ul className="list">
-          {sorted.map((task) => (
-            <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
-          ))}
-          {!sorted.length && <li className="empty">No tasks yet.</li>}
+          {!ready && <li className="empty">Loading tasks…</li>}
+          {ready &&
+            sorted.map((task) => (
+              <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
+            ))}
+          {ready && !sorted.length && <li className="empty">No tasks yet.</li>}
         </ul>
+
       </div>
     </main>
   );
