@@ -11,9 +11,10 @@ Built as an experiment in prompt-driven development with Lovable.
 ## Features
 
 - Add, complete and delete tasks
-- Active tasks on top, completed tasks in their own section
+- One list: active tasks first, completed tasks below, struck through
 - Tasks persist in `localStorage`
-- Loading row while tasks are read, error message if stored data is unavailable or corrupted
+- A loading row is shown until storage is read on the client (avoids a server/client hydration mismatch)
+- Error message if saved data is corrupted or storage is unavailable; corrupted data is backed up
 - Responsive single-column layout, dark theme, styles in plain CSS (variables, flexbox, media queries)
 
 ## Tech
@@ -22,11 +23,13 @@ React 19, TanStack Start / Router (file-based routing), TypeScript, Vite, ESLint
 
 ## How this was built
 
-I wrote the requirements and the prompts; Lovable generated and edited the code.
-I iterated in seven steps: a first version with the basic features, a simplification, a
-dark mobile-first redesign, code optimisation, removal of Tailwind and the component
-library (42 unused packages), then loading/error states. The full prompt history is in
-[`prompts.md`](prompts.md).
+I wrote the requirements and the prompts; Lovable generated the first version of the code
+and applied my follow-up prompts (see [`prompts.md`](prompts.md)). I then reviewed
+`src/routes/index.tsx` myself and fixed:
+
+- saved data was overwritten when `localStorage` held corrupted data: it is now validated and backed up
+- checkboxes were announced as "Mark as complete" without the task text: accessible names now come from the task label
+- `crypto.randomUUID()` fails on non-secure origins (e.g. testing on a phone over HTTP): added a fallback id
 
 ## Project structure
 
