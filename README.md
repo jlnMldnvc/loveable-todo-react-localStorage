@@ -1,4 +1,4 @@
-# Modern Todo Magic 🧙‍♂️
+# Modern To-Do Magic 🧙‍♂️ To-Do App (React + TypeScript)
 
 A lightweight, mobile-first To-Do application built with React, TypeScript, and TanStack Start. Tasks are stored in the browser's LocalStorage — no database, no accounts, no setup.
 
@@ -14,10 +14,17 @@ A lightweight, mobile-first To-Do application built with React, TypeScript, and 
 
 ## 🛠️ Tech Stack
 
-- **Framework:** React 19, TanStack Start
-- **Routing:** TanStack Router (file-based)
+- **Framework:** React 19
+- **Routing:** TanStack Start/Router (file-based)
 - **Styling:** Plain CSS (CSS Variables, Flexbox, Media Queries)
 - **Language & Tooling:** TypeScript, Vite
+
+- 
+## How this was built
+I built this with **Lovable** (an AI app builder) as an experiment in prompt-driven development.
+- **I wrote** the product requirements and the prompts: [mobile-first layout, plain CSS with variables, localStorage, dark theme, ...]. All prompts are in [`docs/prompts.md`](docs/prompts.md).
+- **Lovable generated** the first version of the code (React, TanStack Start, TypeScript).
+- **I reviewed and changed:** [e.g. simplified state handling, refactored, added accessibility labels]
 
 ## 📁 Project Structure
 
