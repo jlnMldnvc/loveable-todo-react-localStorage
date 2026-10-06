@@ -22,7 +22,7 @@ A lightweight, mobile-first To-Do application built with React, TypeScript, and 
 - 
 ## How this was built
 I built this with **Lovable** (an AI app builder) as an experiment in prompt-driven development.
-- **I wrote** the product requirements and the prompts: [mobile-first layout, plain CSS with variables, localStorage, dark theme, ...]. All prompts are in [`docs/prompts.md`](docs/prompts.md).
+- **I wrote** the product requirements and the prompts: [mobile-first layout, plain CSS with variables, localStorage, dark theme, ...]. All prompts are in [`prompts.md`](prompts.md).
 - **Lovable generated** the first version of the code (React, TanStack Start, TypeScript).
 - **I reviewed and changed:** [e.g. simplified state handling, refactored, added accessibility labels]
 
