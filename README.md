@@ -1,81 +1,70 @@
-# Modern To-Do Magic 🧙‍♂️ To-Do App (React + TypeScript)
+# To-Do App (React, TypeScript, TanStack Start)
 
-A lightweight, mobile-first To-Do application built with React, TypeScript, and TanStack Start. Tasks are stored in the browser's LocalStorage — no database, no accounts, no setup.
+A small, mobile-first to-do app with a dark theme. Tasks are stored in the browser
+(`localStorage`): no database, no accounts.
+Built as an experiment in prompt-driven development with Lovable.
 
 **Live demo:** https://modern-do-magic.lovable.app
 
-## 🌟 Features
+<img width="420" alt="To-do app on a phone-sized screen" src="https://github.com/user-attachments/assets/0f240d44-9406-4deb-afbe-047ec094fa6c" />
 
-- **Task Management:** Create, toggle completion, and delete tasks seamlessly.
-- **Local Persistence:** Automatic synchronization with browser `localStorage`.
-- **Automatic Sorting:** Active tasks stay at the top; completed tasks move to the bottom.
-- **Loading & Error States:** Shows a loading row while tasks are read and a clear message if storage is unavailable.
-- **Responsive & Dark UI:** Clean dark theme built with plain, modern CSS.
+## Features
 
-## 🛠️ Tech Stack
+- Add, complete and delete tasks
+- Active tasks on top, completed tasks in their own section
+- Tasks persist in `localStorage`
+- Loading row while tasks are read, error message if stored data is unavailable or corrupted
+- Responsive single-column layout, dark theme, styles in plain CSS (variables, flexbox, media queries)
 
-- **Framework:** React 19
-- **Routing:** TanStack Start/Router (file-based)
-- **Styling:** Plain CSS (CSS Variables, Flexbox, Media Queries)
-- **Language & Tooling:** TypeScript, Vite
+## Tech
 
-- 
+React 19, TanStack Start / Router (file-based routing), TypeScript, Vite, ESLint, Prettier.
+
 ## How this was built
-I built this with **Lovable** (an AI app builder) as an experiment in prompt-driven development.
-- **I wrote** the product requirements and the prompts: [mobile-first layout, plain CSS with variables, localStorage, dark theme, ...]. All prompts are in [`prompts.md`](prompts.md).
-- **Lovable generated** the first version of the code (React, TanStack Start, TypeScript).
-- **I reviewed and changed:** [e.g. simplified state handling, refactored, added accessibility labels]
 
-## 📁 Project Structure
+I wrote the requirements and the prompts; Lovable generated and edited the code.
+I iterated in seven steps: a first version with the basic features, a simplification, a
+dark mobile-first redesign, code optimisation, removal of Tailwind and the component
+library (42 unused packages), then loading/error states. The full prompt history is in
+[`prompts.md`](prompts.md).
+
+## Project structure
 
 ```text
-public/               # Static assets (favicon, robots.txt)
 src/
-├── lib/              # Error reporting and error-page helpers
 ├── routes/
-│   ├── __root.tsx    # App shell, fonts, 404 and error boundaries
-│   └── index.tsx     # Main To-Do page and logic
-├── router.tsx        # TanStack Router configuration
-├── server.ts         # SSR entry wrapper
-├── start.ts          # Server middleware (CSRF, error handling)
-└── styles.css        # Design tokens and component styles
+│   ├── __root.tsx    # app shell, 404 and error boundary (from the template)
+│   └── index.tsx     # the to-do page: state, localStorage, UI
+├── styles.css        # design tokens and component styles
+├── router.tsx, server.ts, start.ts, lib/    # framework and error handling (from the template)
+public/               # static assets
+AGENTS.md, .lovable/  # Lovable project files
 ```
 
-## 🚀 Getting Started
+## Run locally
 
-### Prerequisites
-
-[Node.js](https://nodejs.org/) 20+ (or [Bun](https://bun.sh/)).
-
-### Installation
+Requirements: Node.js (current LTS) or Bun.
 
 ```bash
-git clone https://github.com/jlnMldnvc/loveable-todo-react-supbase.git
-cd loveable-todo-react-supbase
+git clone https://github.com/jlnMldnvc/<repo-name>.git
+cd <repo-name>
 npm install
 npm run dev
 ```
 
-The app runs at `http://localhost:8080`.
-
-### Scripts
+Open the URL printed in the terminal.
 
 | Command | Description |
 | --- | --- |
-| `npm run dev` | Start the dev server |
+| `npm run dev` | Dev server |
 | `npm run build` | Production build |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Lint the codebase |
-| `npm run format` | Format with Prettier |
+| `npm run preview` | Preview the build |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier |
 
-## 📸 Screenshot
+## Ideas for later
 
-<img width="420" height="800" alt="s" src="https://github.com/user-attachments/assets/0f240d44-9406-4deb-afbe-047ec094fa6c" />
-
-
-## 🔮 Future Improvements
-
-- Add task categories and priority levels
-- Add due dates and reminders
-- Cloud sync with user authentication
-- Task search and filtering
+- Edit a task, search and filtering
+- Categories, priorities, due dates
+- Tests (Vitest + Testing Library)
+- Optional cloud sync with sign-in
